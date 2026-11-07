@@ -22,8 +22,10 @@ jobs:
 
       - name: Verifier les fichiers
         run: |
-          for f in html-part-1.txt html-part-2.txt html-part-3.txt; do
-            test -f "$f" || { echo "Fichier manquant : $f"; exit 1; }
+          for i in 1 2 3; do
+            f=$(find . -name "html-part-$i.txt" -not -path "./.git/*" | head -1)
+            test -n "$f" || { echo "Fichier manquant : html-part-$i.txt"; exit 1; }
+            [ "$f" = "./html-part-$i.txt" ] || cp "$f" "html-part-$i.txt"
           done
 
       - name: Creer le projet Expo
